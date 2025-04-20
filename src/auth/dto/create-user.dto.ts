@@ -1,8 +1,12 @@
-// src/auth/dto/create-user.dto.ts
+import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
 export class CreateUserDto {
-    username: string;
-    email: string;
-    password: string;
-  }
-  
+  @IsNotEmpty({ message: 'Username is required' })
+  username: string;
+
+  @IsEmail({}, { message: 'Invalid email format' })
+  email: string;
+
+  @MinLength(6, { message: 'Password must be at least 6 characters long' })
+  password: string;
+}

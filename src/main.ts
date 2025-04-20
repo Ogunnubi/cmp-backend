@@ -5,18 +5,23 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // ✅ Allow CORS for frontend origin
+  app.enableCors({
+    origin: 'http://localhost:3001', // your frontend origin
+    credentials: true, // if using cookies or Authorization headers
+  });
+
   // Swagger setup
   const config = new DocumentBuilder()
-    .setTitle('API Documentation') // Set the title of the API
-    .setDescription('API documentation for your backend') // Description of your API
-    .setVersion('1.0') // API version
-    .addBearerAuth() // Optional: if your API uses Bearer tokens (JWT authentication)
+    .setTitle('API Documentation')
+    .setDescription('API documentation for your backend')
+    .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api-docs', app, document); // You can change the path to whatever you prefer (e.g., '/docs')
+  SwaggerModule.setup('api-docs', app, document);
 
   await app.listen(3000);
 }
-
 bootstrap();
